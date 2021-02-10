@@ -1,2 +1,2 @@
-# BiznesradarRepository
+# BusinessRadarRepository
 Scrapy project
