@@ -1,0 +1,2 @@
+# BiznesradarRepository
+Scrapy project
