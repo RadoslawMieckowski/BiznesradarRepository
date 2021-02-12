@@ -1,3 +1,4 @@
+#You don't need this file since You use Mongodb, so never mind about the following prattle :) 
 # import sqlite3
 #
 # conn=sqlite3.connect('biznesradar.db')
