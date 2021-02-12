@@ -1,31 +1,24 @@
 import scrapy
 
 from ..items import BiznesradarItem
-# import requests
-# proxy=''
-# r=requests.get('https://httpbin.org/ip',proxies={'http':proxy,'https':proxy},timeout=3)
-# print(r.json())
+
 
 class BiznesradarSpiderSpider(scrapy.Spider):
     name = 'biznesradar_spider'
     # allowed_domains = ['https://www.biznesradar.pl/gielda/indeks:WIG20']
     start_urls = ['https://www.biznesradar.pl/gielda/indeks:WIG20']
     #'https://www.biznesradar.pl/notowania/ASSECO-POLAND#1d_lin_lin'
-    #trzeba by zacząć od    https://www.biznesradar.pl/gielda/indeks:WIG20
-    # ponieważ to wig 20 więc pętla  for i in range(20)....
+  
     # https://docs.scrapy.org/en/latest/intro/tutorial.html#response-follow-example
 
     def parse(self,response):
 
-        co_skrapujemy = 'https://www.biznesradar.pl'
+        site = 'https://www.biznesradar.pl'
         temp_list = response.css('.wname::attr(href)').extract()
-        # print(co_skrapujemy)
-        # print(temp_list)
-        # print(temp_list[19])
-        # print(response.url)  #wazne
+
         links=[]
         for x in range(len(temp_list)):
-            links.append(co_skrapujemy + temp_list[x])
+            links.append(site + temp_list[x])
         print(links)
 
         counter=0
@@ -36,17 +29,11 @@ class BiznesradarSpiderSpider(scrapy.Spider):
 
     def createItem(self, response):
         items = BiznesradarItem()
-        # list = response.css('td.selectorgadget_selected a::attr(href)')
-        # for company in range(20):
-        #     link = list[company]
-        #     print(response.url)
-        #     yield response.follow(link, callback=self.parse)
-
-
-        ogolne = response.css('#profile-header')
-        nameOfCompany = ogolne.css('h2::text').extract()
-        price = ogolne.css('.q_ch_act::text').extract()
-        date = ogolne.css('.q_ch_date::text').extract()
+     
+        container = response.css('#profile-header')
+        nameOfCompany = container.css('h2::text').extract()
+        price = container.css('.q_ch_act::text').extract()
+        date = container.css('.q_ch_date::text').extract()
         isToBuy = response.css('.indicator-result::text').extract()
 
         table_of_indicators = response.css('.ratios')
@@ -81,16 +68,11 @@ class BiznesradarSpiderSpider(scrapy.Spider):
         except:
             priceToOperationalProfit = None
 
-        # rows = table_of_indicators.css('tr::text').extract_all()
-
-
-            # for x in table_of_indicators:
-            #     print(table_of_indicators.css('tr::text')
+     
 
         items['priceToProfit'] = priceToProfit
         items['priceToOperationalProfit'] = priceToOperationalProfit
         items['ROE'] = ROE
         items['ROA'] = ROA
 
-            # items['rows']=rows
         yield items
