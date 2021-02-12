@@ -8,7 +8,7 @@
 from itemadapter import ItemAdapter
 # import sqlite3
 import pymongo
-# tu yieldowane są nasze obiekty
+
 class BiznesradarPipeline(object):
 
     def __init__(self):
@@ -20,7 +20,8 @@ class BiznesradarPipeline(object):
         )
         db = self.conn['biznesradar_spider']
         self.collection = db['biznesradar_tb']
-
+    
+    # Don't need the following code, for there's Mongodb instead :)
     # def create_connection(self):
     #     self.conn= sqlite3.connect('biznesradar.db')
     #     self.curr= self.conn.cursor()
@@ -40,7 +41,7 @@ class BiznesradarPipeline(object):
         return item
 
     # def store_db(self,item):
-    #     self.conn.commit()  #nie zamykamy jeszcze połączenia, bo chcemy wszystkie itemy, a nie tylko pierwszy z nich
+    #     self.conn.commit()  
     #     self.curr.execute("""INSERT INTO indicators_tb VALUES(?,?,?,?,?,?,?,?,?,?)""",(
     #                         item['date'][0],
     #                         item['nameOfCompany'][0],
